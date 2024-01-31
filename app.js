@@ -13,6 +13,9 @@ app.set("view engine", "ejs")
 //listening for requests 
 app.listen(3000);
 
+//static files = images, css etc
+app.use (express.static ("public"))
+
 app.get('/', (req, res) => {
     res.render('index');
 });
