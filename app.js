@@ -1,7 +1,8 @@
 const express = require ("express")
 
 //this connection is for the omdb task
-const { makeDBConnectionPool } = require ("./dbhelp")
+const { makeDBConnectionPool } = require ("./dbhelp");
+const { result } = require("lodash");
 const pool = makeDBConnectionPool ("omdb")
 
 //express app
@@ -57,8 +58,74 @@ app.get('/arrayofteams', (req, res) => {
     res.render('arrayofteams', {teams});
 });
 
+//task 13.1 route params - reversing words
+app.get('/reverse/:word', (req, res) => {
+    const wordToReverse = req.params.word;
+    const reversedWord = reverseWord(wordToReverse);
+    
+    res.send(reversedWord);
+  });
 
-//if user types a random url this takes them to error page
+//task 13.1 function to reverse a word
+function reverseWord(word) {
+    return word.split('').reverse().join('');
+  }
+  
+  //task 13.2 removing all vowels
+  app.get('/removingVowels/:word', (req, res) => {
+    const theWord = req.params.word; 
+    const result = removingVowels(theWord);
+    res.send(result);
+  });
+
+//task 13.2 function to remove vowels
+  function removingVowels(inputString) {
+    const vowels = ["a", "e", "i", "o", "u", "A", "E", "I", "O", "U"];
+    let result = "";
+  
+    for (let letter of inputString) {
+      if (!vowels.includes(letter)) {
+        result += letter;
+      }
+    }
+  
+    return result;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //if user types a random url this takes them to 404 error page
 app.use((req, res) => {
-        res.status(404).render("404")
-    });
+    res.status(404).render("404")
+});
